@@ -67,13 +67,13 @@ export default function Panel() {
   };
 
   return (
-    <div className="flex w-max justify-center">
-      <div className="flex flex-col md:flex-row gap-4">
+    <div className="flex w-full justify-center max-w-[866px]">
+      <div className="flex flex-col md:flex-row gap-4 w-full">
         <aside className="hidden md:block">
           <NavList active={active} onChange={setActive} disabled={isLoading} />
         </aside>
 
-        <div className="md:hidden">
+        <div className="md:hidden w-full">
           <Tabs value={active} onValueChange={(v) => !isLoading && setActive(v as ActionKind)}>
             <TabsList className="w-full">
               <TabsTrigger value="like-post" className="flex-1" disabled={isLoading}>
@@ -89,7 +89,7 @@ export default function Panel() {
           </Tabs>
         </div>
 
-        <section className="min-w-[320px]">
+        <section className="min-w-[380px] w-full">
           {active === "like-post" && <LikePostForm onSubmit={handleSubmit} isLoading={isLoading} />}
           {active === "comment-post" && <CommentPostForm onSubmit={handleSubmit} isLoading={isLoading} />}
           {active === "like-comment" && <LikeCommentForm onSubmit={handleSubmit} isLoading={isLoading} />}

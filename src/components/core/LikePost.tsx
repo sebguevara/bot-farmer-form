@@ -48,7 +48,7 @@ export const LikePostForm = ({
   }
 
   return (
-    <Card className="rounded-2xl relative">
+    <Card className="rounded-2xl relative w-full min-w-[380px]">
       <CardHeader>
         <div className="flex items-center justify-between">
         <CardTitle className="flex items-center gap-2">

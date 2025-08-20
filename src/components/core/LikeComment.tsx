@@ -45,7 +45,7 @@ export const LikeCommentForm = ({ onSubmit, isLoading }: { onSubmit?: (p: QueryP
     }
 
     return (
-      <Card className="rounded-2xl shadow-lg">
+      <Card className="rounded-2xl shadow-lg w-full min-w-[380px]">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2"><Heart className="h-5 w-5"/>Like a comentarios</CardTitle>

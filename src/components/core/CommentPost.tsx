@@ -31,7 +31,7 @@ export const CommentPostForm = ({ onSubmit, isLoading }: { onSubmit?: (p: QueryP
     }
 
     return (
-      <Card className="rounded-2xl">
+      <Card className="rounded-2xl w-full min-w-[380px]">
         <CardHeader>
           <CardTitle className="flex items-center gap-2"><MessageSquarePlus className="h-5 w-5"/>Crear comentario</CardTitle>
         </CardHeader>
