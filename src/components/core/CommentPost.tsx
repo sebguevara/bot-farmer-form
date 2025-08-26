@@ -1,3 +1,5 @@
+"use client"
+
 import { useMemo, useState } from "react";
 import { splitToArray } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,11 +7,14 @@ import { MessageSquarePlus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { FieldRow, Helper } from "./Utils";
-import { QueryPayload } from "./form";
 import { Input } from "../ui/input";
 import { Loader2 } from "lucide-react";
+import { commentPost } from "@/app/repositories/agent.repo";
+import { CommentPostPayload } from "@/app/types";
+import { toast } from "sonner";
+import { Response } from "@/types/response.types";
 
-export const CommentPostForm = ({ onSubmit, isLoading }: { onSubmit?: (p: QueryPayload) => void, isLoading: boolean }) => {
+export const CommentPostForm = ({ isLoading, setLoading }: { isLoading: boolean, setLoading: (loading: boolean) => void }) => {
     const [usernames, setUsernames] = useState("");
     const [posts, setPosts] = useState("");
     const [comments, setComments] = useState("");
@@ -18,16 +23,26 @@ export const CommentPostForm = ({ onSubmit, isLoading }: { onSubmit?: (p: QueryP
     const commentsArr = useMemo(() => comments.split(/\n+/).map((s) => s.trim()).filter(Boolean), [comments]);
 
     const isDisabled = useMemo(() => {
-      return !usernames || postsArr.length === 0;
-    }, [usernames, postsArr.length]);
+      return !usernames || postsArr.length === 0 || comments.length === 0;
+    }, [usernames, postsArr.length, comments.length]);
 
-    const handleSubmit = () => {
-      if (!usernames || postsArr.length === 0) return;
-      onSubmit?.({ query: `Comentar en el post ${posts} con la cuenta ${usernames} el comentario "${comments}"` });
+    const handleSubmit = async () => {
+      if (!usernames || postsArr.length === 0 || comments.length === 0) return;
+      setLoading(true);
+      const payload = { post_id: posts, message: comments, username: usernames } as CommentPostPayload;
+      try{
+        const res : Response = await commentPost(payload.post_id, payload.message, payload.username);
+        if (res.status === "success") {
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      } catch (err: unknown) {
+        toast.error(err instanceof Error ? err.message : "Ocurrió un error al procesar la solicitud.");
+      } finally {
+        setLoading(false);
+      }
 
-      setUsernames("");
-      setPosts("");
-      setComments("");
     }
 
     return (

@@ -1,5 +1,7 @@
+"use client"
+
 import { useMemo, useState } from "react";
-import { GroupNumber, QueryPayload } from "./form";
+import { GroupNumber } from "./form";
 import { groups, splitToArray } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThumbsUp, Loader2 } from "lucide-react";
@@ -10,13 +12,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { FieldRow, Helper } from "./Utils";
 import { Input } from "../ui/input";
+import { likePost, likePostSingle } from "@/app/repositories/agent.repo";
+import { LikePostPayload, LikePostSinglePayload } from "@/app/types";
+import { toast } from "sonner";
 
 export const LikePostForm = ({
-  onSubmit,
   isLoading,
+  setLoading,
 }: {
-  onSubmit?: (p: QueryPayload) => void;
   isLoading: boolean;
+  setLoading: (loading: boolean) => void;
 }) => {
   const [modeSingle, setModeSingle] = useState(false);
   const [username, setUsername] = useState("");
@@ -33,13 +38,40 @@ export const LikePostForm = ({
     }
   }, [modeSingle, username, postsArr.length, group]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (modeSingle) {
       if (!username || postsArr.length === 0) return;
-      onSubmit?.({ query: `Dar like al post ${posts} con la cuenta ${username}` });
+      setLoading(true);
+      const payload = { post_id: posts, username } as LikePostSinglePayload;
+      try{
+        const res = await likePostSingle(payload.post_id, payload.username);
+        if (res.status === "success") {
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      } catch (err: unknown) {
+        toast.error(err instanceof Error ? err.message : "Ocurrió un error al procesar la solicitud.");
+      } finally {
+        setLoading(false);
+      }
     } else {
       if (!group || postsArr.length === 0) return;
-      onSubmit?.({ query: `Dar like al post ${posts} con el grupo ${group}` });
+      setLoading(true);
+      const payload = { post_id: posts, group_id: group } as LikePostPayload;
+      try{
+        const res = await likePost(payload.post_id, payload.group_id);
+        if (res.status === "success") {
+          toast.success(res.message);
+        } else {
+          toast.error(res.message);
+        }
+      } catch (err: unknown) {
+        
+        toast.error(err instanceof Error ? err.message : "Ocurrió un error al procesar la solicitud.");
+      } finally {
+        setLoading(false);
+      }
     }
 
     setPosts("");

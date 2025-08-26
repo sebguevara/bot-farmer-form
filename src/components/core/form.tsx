@@ -3,17 +3,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThumbsUp, MessageSquarePlus, Heart } from "lucide-react";
+import { LikeCommentForm } from "./LikeComment";
 import { LikePostForm } from "./LikePost";
 import { CommentPostForm } from "./CommentPost";
-import { LikeCommentForm } from "./LikeComment";
 import { NavList } from "./NavList";
-import { postAgent } from "@/app/repositories/agent.repo";
 import { Progress } from "../ui/progress";
-import { toast } from "sonner";
-import { Response } from "@/types/response.types";
 
 export type GroupNumber = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
-export type QueryPayload = { query: string };
 export type ActionKind = "like-post" | "comment-post" | "like-comment";
 
 export default function Panel() {
@@ -53,19 +49,6 @@ export default function Panel() {
     return () => clearTimers();
   }, [isLoading]);
 
-  const handleSubmit = async (payload: QueryPayload) => {
-    try {
-      setIsLoading(true);
-      const res = await postAgent(payload.query) as unknown as Response;
-      const response = res?.response?.split(".")[0];
-      toast.success(response || "Acción realizada correctamente.");
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Ocurrió un error al procesar la solicitud.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="flex w-full justify-center max-w-[866px]">
       <div className="flex flex-col md:flex-row gap-4 w-full">
@@ -90,9 +73,9 @@ export default function Panel() {
         </div>
 
         <section className="min-w-[380px] w-full">
-          {active === "like-post" && <LikePostForm onSubmit={handleSubmit} isLoading={isLoading} />}
-          {active === "comment-post" && <CommentPostForm onSubmit={handleSubmit} isLoading={isLoading} />}
-          {active === "like-comment" && <LikeCommentForm onSubmit={handleSubmit} isLoading={isLoading} />}
+          {active === "like-post" && <LikePostForm isLoading={isLoading} setLoading={setIsLoading} />}
+          {active === "comment-post" && <CommentPostForm isLoading={isLoading} setLoading={setIsLoading} />}
+          {active === "like-comment" && <LikeCommentForm isLoading={isLoading} setLoading={setIsLoading} />}
 
           {showProgress && <Progress value={progress} className="h-2 my-4" />}
         </section>

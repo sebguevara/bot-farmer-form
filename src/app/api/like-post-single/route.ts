@@ -4,18 +4,21 @@ import { Response } from '@/types/response.types'
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = (await request.json()) as { query: string; account: string }
+    const payload = await request.json() as { post_id: string; username: string; }
+  
+    const { data }: { data: Response } = await api.post(
+      '/like_post_single',
+      payload
+    )
 
-    const { data }: { data: Response } = await api.post('/agent/query', payload, {
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    })
     if (!data) {
       throw new Error('No data received from API')
     }
-    return NextResponse.json({ response: data })
+
+    return NextResponse.json(data)
   } catch (e: unknown) {
     const message = e instanceof Error ? e.message : 'API error'
-    console.error('[/api/agent] error:', message)
+    console.error('[/api/like-post-single] error:', message)
     return NextResponse.json({ error: 'API error', message }, { status: 500 })
   }
 }

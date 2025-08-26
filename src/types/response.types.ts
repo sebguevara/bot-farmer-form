@@ -1,6 +1,5 @@
 export type Response = {
-  response: string;
-  status: number;
-  error: string;
+  message: string;
   current_time: string;
+  status: string;
 }
