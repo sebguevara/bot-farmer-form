@@ -65,11 +65,6 @@ export const LikeCommentForm = ({ isLoading, setLoading }: { isLoading: boolean,
           setLoading(false);
         }
       }
-
-      setUsername("");
-      setGroup("1");
-      setPosts("");
-      setTargets("");
     }
 
   

@@ -73,10 +73,6 @@ export const LikePostForm = ({
         setLoading(false);
       }
     }
-
-    setPosts("");
-    setUsername("");
-    setGroup("1");
   }
 
   return (
