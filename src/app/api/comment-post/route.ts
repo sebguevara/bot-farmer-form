@@ -1,24 +1,27 @@
-import { api } from '@/config/api'
-import { NextRequest, NextResponse } from 'next/server'
-import { Response } from '@/types/response.types'
+import { api } from "@/config/api";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = await request.json() as { post_id: string; message: string; username: string; }
-  
+    const payload = (await request.json()) as {
+      post_id: string;
+      message: string;
+      username: string;
+    };
+
     const { data }: { data: Response } = await api.post(
-      '/comment_post',
+      "/comment_post",
       payload
-    )
+    );
 
     if (!data) {
-      throw new Error('No data received from API')
+      throw new Error("No data received from API");
     }
 
-    return NextResponse.json(data)
+    return NextResponse.json(data);
   } catch (e: unknown) {
-    const message = e instanceof Error ? e.message : 'API error'
-    console.error('[/api/comment-post] error:', message)
-    return NextResponse.json({ error: 'API error', message }, { status: 500 })
+    const message = e instanceof Error ? e.message : "API error";
+    console.error("[/api/comment-post] error:", message);
+    return NextResponse.json({ error: "API error", message }, { status: 500 });
   }
 }
