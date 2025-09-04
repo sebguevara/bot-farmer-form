@@ -1,4 +1,4 @@
-import { api } from '@/app/config/api'
+import { api } from '@/config/api'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(request: NextRequest) {

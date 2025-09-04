@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ThemeProvider } from "@/components/core/theme-provider"
+import { ThemeProvider } from "@/components/core/theme-provider";
+import { AuthProvider } from "@/providers/authContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Instagram Engagement Panel",
-  description: "Panel para gestionar el engagement en Instagram",
+  description: "Aplicación para gestionar el engagement en Instagram",
 };
 
 export default function RootLayout({
@@ -29,13 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
-          {children}
-          <Toaster position="top-center" richColors duration={4000} />
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <AuthProvider>
+            {children}
+            <Toaster position="top-center" richColors duration={4000} />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

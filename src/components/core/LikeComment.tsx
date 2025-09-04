@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { FieldRow, Helper } from "./Utils";
 import { Input } from "../ui/input";
-import { LikeCommentPayload, LikeCommentSinglePayload } from "@/app/types";
-import { likeComment, likeCommentSingle } from "@/app/repositories/agent.repo";
+import { LikeCommentPayload, LikeCommentSinglePayload } from "@/types";
+import { likeComment, likeCommentSingle } from "@/repositories/agent.repo";
 import { toast } from "sonner";
 
 export const LikeCommentForm = ({ isLoading, setLoading }: { isLoading: boolean, setLoading: (loading: boolean) => void }) => {

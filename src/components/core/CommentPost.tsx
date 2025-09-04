@@ -9,8 +9,8 @@ import { Button } from "@/components/ui/button";
 import { FieldRow, Helper } from "./Utils";
 import { Input } from "../ui/input";
 import { Loader2 } from "lucide-react";
-import { commentPost } from "@/app/repositories/agent.repo";
-import { CommentPostPayload } from "@/app/types";
+import { commentPost } from "@/repositories/agent.repo";
+import { CommentPostPayload } from "@/types";
 import { toast } from "sonner";
 import { Response } from "@/types/response.types";
 

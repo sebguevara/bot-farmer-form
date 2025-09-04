@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button";
 import { FieldRow, Helper } from "./Utils";
 import { Input } from "../ui/input";
-import { likePost, likePostSingle } from "@/app/repositories/agent.repo";
-import { LikePostPayload, LikePostSinglePayload } from "@/app/types";
+import { likePost, likePostSingle } from "@/repositories/agent.repo";
+import { LikePostPayload, LikePostSinglePayload } from "@/types";
 import { toast } from "sonner";
 
 export const LikePostForm = ({
